@@ -17,11 +17,11 @@ jobs:
           chmod 600 ~/.ssh/tes_server_polindra
           ssh-keyscan -p 8022 -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
       - name: Test SSH
-          run: |
+        run: |
           ssh -i ~/.ssh/tes_server_polindra -p 8022 ${{ secrets.SERVER_USER }}@${{
           secrets.SERVER_IP }} "echo CONNECTED"
       - name: Deploy to Server
-          run: |
+        run: |
           rsync -avz --delete \
           -e "ssh -p 8022 -i ~/.ssh/tes_server_polindra" \
           ./ \
