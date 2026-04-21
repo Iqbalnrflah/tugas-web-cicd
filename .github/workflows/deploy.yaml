@@ -11,18 +11,16 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup SSH
         run: |
-          mkdir -p ~/.ssh
-          printf "%s\n" "${{ secrets.SSH_PRIVATE_KEY }}" >
+          mkdir -p ~/.ssh printf "%s\n" "${{ secrets.SSH_PRIVATE_KEY }}" >
           ~/.ssh/tes_server_polindra
           chmod 600 ~/.ssh/tes_server_polindra
           ssh-keyscan -p 8022 -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
       - name: Test SSH
         run: |
-          ssh -i ~/.ssh/tes_server_polindra -p 8022 ${{ secrets.SERVER_USER }}@${{
-          secrets.SERVER_IP }} "echo CONNECTED"
+          ssh -i ~/.ssh/tes_server_polindra -p 8022 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "echo CONNECTED"
       - name: Deploy to Server
         run: |
           rsync -avz --delete \
           -e "ssh -p 8022 -i ~/.ssh/tes_server_polindra" \
           ./ \
-          ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:${{secrets.DEPLOY_PATH }}
+          ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_PATH }}
